@@ -7,3 +7,7 @@
 ## Git Training
 
 ![Git Training](Git/Git%20Training.png)
+
+## Git Basics
+
+![Git Training](Git/Git%20Basics.png)
