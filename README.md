@@ -14,8 +14,8 @@
 
 ## Introduction to C  
 
-![Introduction to C](C/Introduction%20to%20C.png)  
+![Introduction to C](C/Introduction%20to%20C.jpg)  
 
 ## C Intermediate  
 
-![C Intermediate](C/C%20Intermediate.png)
+![C Intermediate](C/C%20Intermediate.jpg)
