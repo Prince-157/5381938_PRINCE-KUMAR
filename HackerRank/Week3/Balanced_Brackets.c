@@ -12,51 +12,81 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'miniMaxSum' function below.
+ * Complete the 'isBalanced' function below.
  *
- * The function accepts INTEGER_ARRAY arr as parameter.
+ * The function is expected to return a STRING.
+ * The function accepts STRING s as parameter.
  */
 
-void miniMaxSum(int arr_count, int* arr) {
-    int min, max;
-    long long sum = 0 , min_sum, max_sum;
-    
-    for (int i=0;i<arr_count;i++){
-        sum = sum +arr[i];
-        
-        min  = arr[0];
-        max = arr[0];
-    }
-    for (int i = 0; i< arr_count; i++){
-        if (arr[i] < min) min = arr[i];
-        if (arr[i] > max) max = arr[i];
-    }
-    min_sum = sum-max;
-    max_sum = sum-min;
+/*
+ * To return the string from the function, you should either do static allocation or dynamic allocation
+ *
+ * For example,
+ * char* return_string_using_static_allocation() {
+ *     static char s[] = "static allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ * char* return_string_using_dynamic_allocation() {
+ *     char* s = malloc(100 * sizeof(char));
+ *
+ *     s = "dynamic allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ */
 
-printf("%lld %lld\n", min_sum, max_sum);
+char* isBalanced(char* s) {
+    int len = strlen(s);
+    char* stack = malloc(len);
+    int top = -1;
 
+    for (int i = 0; i < len; i++) {
+        char c = s[i];
+        if (c == '(' || c == '{' || c == '[') {
+            stack[++top] = c;
+        } else {
+            if (top == -1) {
+                free(stack);
+                return "NO";
+            }
+            char open = stack[top--];
+            if ((c == ')' && open != '(') ||
+                (c == '}' && open != '{') ||
+                (c == ']' && open != '[')) {
+                free(stack);
+                return "NO";
+            }
+        }
+    }
+
+    char* result = (top == -1) ? "YES" : "NO";
+    free(stack);
+    return result;
 }
+
 
 int main()
 {
+    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** arr_temp = split_string(rtrim(readline()));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    int* arr = malloc(5 * sizeof(int));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        char* s = readline();
 
-    for (int i = 0; i < 5; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+        char* result = isBalanced(s);
 
-        *(arr + i) = arr_item;
+        fprintf(fptr, "%s\n", result);
     }
 
-    miniMaxSum(5, arr);
+    fclose(fptr);
 
     return 0;
 }
@@ -147,27 +177,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {
